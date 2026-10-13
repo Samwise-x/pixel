@@ -2,7 +2,7 @@ import { Plugin } from "@opencode/plugin"
 
 // OpenCode V2 policy: deterministic veto at the permission admission seam.
 // Guard both shell requests and post-tool observability without relying on model instructions.
-const destructive = /(^|[;&| ]+)(?:sudo\s+)?(?:rm\s+-[A-Za-z]*r[A-Za-z]*f|git\s+(?:reset\s+--hard|clean\s+-[A-Za-z]*f)|(?:mkfs|dd)\s)/i
+const destructive = /(^|[;&| ]+)(?:sudo\s+)?(?:rm\s+-[A-Za-z]*r[A-Za-z]*f|git\s+(?:reset\s+--hard|clean\s+-[A-Za-z]*f)|(?:mkfs(?:\.[A-Za-z0-9_-]+)?|dd)\s)/i
 const protectedPaths = /(?:\/home\/droid\/samwise\/docs\/|\/\.ssh\/|\/etc\/sudoers)/i
 
 export default Plugin.define({
