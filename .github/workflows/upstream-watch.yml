@@ -1,0 +1,32 @@
+name: Upstream release watch
+
+on:
+  schedule:
+    - cron: '27 9 * * 5'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  watch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check tracked upstream releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          for project in google-ai-edge/gallery thejaustin/ShizukuPlus; do
+            tag=$(gh api "repos/$project/releases/latest" --jq '.tag_name')
+            title="[upstream] $project@$tag"
+            found=$(gh api -X GET search/issues -f q="repo:$REPO is:issue in:title \"$title\"" --jq '.total_count')
+            if [[ "$found" == 0 ]]; then
+              gh issue create --repo "$REPO" --title "$title" --body "New upstream release detected: https://github.com/$project/releases/tag/$tag
+
+Review changes, evaluate compatibility, and open a controlled update PR. Do not promote unverified changes."
+            fi
+          done
