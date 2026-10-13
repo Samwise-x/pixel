@@ -1,0 +1,13 @@
+.env
+.env.*
+!.env.example
+.cache/
+*.log
+*.apk
+*.aab
+*.gguf
+*.task
+*.tflite
+*.litertlm
+node_modules/
+build/
