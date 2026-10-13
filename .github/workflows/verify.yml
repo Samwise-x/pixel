@@ -24,6 +24,9 @@ jobs:
           git diff --check
           test -f AGENTS.md
           test -f CONTEXT.md
+          test -f GLOSSARY.md
+          test -f docs/agents/domain.md
+          test -f docs/agents/triage-labels.md
           test -f docs/agents/issue-tracker.md
       - name: Install v2 plugin SDK
         run: npm install --prefix .opencode --no-audit --no-fund
