@@ -93,7 +93,8 @@ def run(path, writer, action, receipt_drive_id):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("action", choices=("verify", "apply"))
-    p.add_argument("--receipt", type=Path, required=True)\n    p.add_argument("--receipt-drive-id", required=True)
+    p.add_argument("--receipt", type=Path, required=True)
+    p.add_argument("--receipt-drive-id", required=True)
     p.add_argument("--writer", type=Path, default=Path.home() / "dev/scripts/samwise.py")
     args = p.parse_args()
     try:
