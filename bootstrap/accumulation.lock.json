@@ -104,5 +104,15 @@
     ],
     "next_target": "Chromebook and Moto G 2026 when accessible via the existing authorized device bridge"
   },
-  "verified_source": "https://drive.google.com/file/d/12Nuk_KgSLnBjZlhXRBTs6RlzpvTo4XQp/view"
+  "verified_source": "https://drive.google.com/file/d/12Nuk_KgSLnBjZlhXRBTs6RlzpvTo4XQp/view",
+  "entrypoint": {
+    "type": "existing_chatgpt_plugin",
+    "plugin_id": "plugins_6acbd8b325688191b23f07a19463ea14",
+    "plugin_url": "https://chatgpt.com/plugins/plugins_6acbd8b325688191b23f07a19463ea14",
+    "plugin_version": "1.2.0",
+    "plugin_release_id": "pluginrel_6aee6bd075ec8191acceda7441d48bb5",
+    "skill": "samwise-restore",
+    "prompt": "Restore the existing SAMWISE control plane on this device. Reuse GitHub, Google Drive, Remote Desktop Commander, and the native SAMWISE ledger; do not create duplicates.",
+    "action": "perform authenticated readbacks, reconcile only missing target binding, then verify idempotence and publish receipt"
+  }
 }
