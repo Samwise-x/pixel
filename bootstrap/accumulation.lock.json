@@ -1,0 +1,108 @@
+{
+  "schema": "samwise.accumulation/v1",
+  "policy": "reconcile-existing-identities; preserve; never duplicate",
+  "identity": {
+    "repo_full_name": "Samwise-x/pixel",
+    "repo_id": 1416236181,
+    "default_branch": "main",
+    "project_url": "https://github.com/users/Samwise-x/projects/4",
+    "project_number": 4,
+    "project_node_id": "PVT_kwHODwj8G84BqjDS",
+    "issue_url": "https://github.com/Samwise-x/pixel/issues/1"
+  },
+  "google_drive": {
+    "canonical_folder_id": "1dmMV-67c-daoTEftPbGqWcCgPo-UDbcs",
+    "canonical_folder_url": "https://drive.google.com/drive/folders/1dmMV-67c-daoTEftPbGqWcCgPo-UDbcs",
+    "parent_folder_id": "1OCXIdE_Zqw__rGk_IdBlcmV4t3295Uxs",
+    "artifacts": [
+      {
+        "role": "source_collector",
+        "id": "1AgU0u3YzLpCRWna1VWACp836vmVysP-Z",
+        "name": "deep_modules.py",
+        "sha256": "5997ad2acbc735c1cb6fadc645d34210f8e49643b93f05dd75c7af8ef0b8040e"
+      },
+      {
+        "role": "baseline_evidence",
+        "id": "1qiZDdByYbfAkjDXrE5JbtEVUUg6vQO9v",
+        "name": "evidence_20261106T233348Z.json",
+        "sha256": "37cb5e1b5922415fd546646980b87c5fbeb6a9da1199ddf5541f03467b9f4733"
+      },
+      {
+        "role": "executable_release",
+        "id": "1bLHYN_6ouudOQ5FqUpKvsj1cN6f8LT5f",
+        "name": "PIXEL11_DEEP_MODULES_EXECUTABLE_RELEASE_20261106.zip"
+      },
+      {
+        "role": "original_macro",
+        "id": "1likVrLli9QFXqsSgZsHbjzW8Jj9CmOL8",
+        "name": "samwise_proof_original.macro",
+        "sha256": "11f22f47b0ecd51a4dff7676ca1c8ead7ba41e98af4c0f27c792b198d15bf580",
+        "parent_folder_id": "1tRMxraBa7DWPtTpl6JbH-x0ldkTy5_oP"
+      }
+    ]
+  },
+  "runtime": {
+    "pixel11": {
+      "workspace": "~/dev",
+      "cli": "~/.local/bin/samwise",
+      "diagnostic_argv": [
+        "samwise",
+        "--status"
+      ],
+      "collector": "~/dev/p11-deep-modules-v1/deep_modules.py",
+      "ledger": "~/.local/state/samwise/events.ndjson",
+      "ledger_schema": "samwise.event/v1",
+      "genesis_observed": {
+        "event_count": 135,
+        "sha256": "3cbb15839ae0532d85d5494147c05676e16ce6fc25f2b17f71680a674e676c7b"
+      },
+      "shizuku_shell_uid": 2000,
+      "service_supervisor": "runit",
+      "default_action": "verify-current-state-not-reinstall"
+    },
+    "other_devices": {
+      "device_agnostic_identity": "use runtime-observed serial/model/uid, not Pixel 11 properties",
+      "control_plane": "reuse the SAME repository/project/Drive artifacts",
+      "link_to_ledger": "record a device-bound event only after independent device identity and authorization",
+      "device_runtimes": "inspect and reuse; install only essential missing capabilities necessary for an accepted workload"
+    }
+  },
+  "contract": {
+    "authority": [
+      "GitHub plugin or authenticated gh",
+      "Google Drive plugin with user OAuth",
+      "Remote Desktop Commander or authenticated SSH/ADB",
+      "native samwise and OpenClaw CLI"
+    ],
+    "readback_required": [
+      "GitHub repository ID",
+      "project ID",
+      "Drive folder ID, file names and parents",
+      "target device identity and remote execution",
+      "ledger head/count",
+      "runtime health"
+    ],
+    "allowed_mutations": [
+      "write a new per-target bootstrap receipt into existing Drive evidence folder",
+      "append an evidence event through the existing SAMWISE ledger writer on the authorized controller",
+      "restore missing instance-specific linkage explicitly authorized by user"
+    ],
+    "forbidden": [
+      "new duplicate repositories",
+      "new duplicate Drive roots",
+      "new service supervisor",
+      "reinstall healthy software",
+      "copy or publish credentials",
+      "rewrite historical ledger",
+      "assert a device is READY without live target readback"
+    ],
+    "result_values": [
+      "VERIFIED",
+      "UNCHANGED",
+      "ACTION_REQUIRED",
+      "FAILED"
+    ],
+    "next_target": "Chromebook and Moto G 2026 when accessible via the existing authorized device bridge"
+  },
+  "verified_source": "https://drive.google.com/file/d/12Nuk_KgSLnBjZlhXRBTs6RlzpvTo4XQp/view"
+}
