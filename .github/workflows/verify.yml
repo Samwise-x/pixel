@@ -28,6 +28,10 @@ jobs:
           test -f docs/agents/domain.md
           test -f docs/agents/triage-labels.md
           test -f docs/agents/issue-tracker.md
+      - name: Validate frozen SAMWISE bootstrap source
+        run: |
+          python3 -m json.tool bootstrap/accumulation.lock.json >/dev/null
+          python3 -m py_compile bootstrap/bind_existing_ledger.py
       - name: Install v2 plugin SDK
         run: npm install --prefix .opencode --no-audit --no-fund
       - name: Run deterministic policy tests
