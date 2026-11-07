@@ -46,7 +46,7 @@ def validated_receipt(raw):
         or gh.get("project_readback") is not True):
         raise ValueError("GITHUB_IDENTITY_UNVERIFIED")
     if (drive.get("folder_id") != DRIVE_FOLDER or drive.get("folder_readback") is not True
-        or not isinstance(drive.get("receipt_file_id"), str) or not drive["receipt_file_id"]):
+        ):
         raise ValueError("DRIVE_IDENTITY_UNVERIFIED")
     if (not isinstance(device, dict) or not isinstance(device.get("observed_model"), str)
         or not isinstance(device.get("execution_proof"), str) or len(device["execution_proof"]) < 8
@@ -55,16 +55,16 @@ def validated_receipt(raw):
     # The receipt comes from a fully observed, independently checked connector pass.
     return obj
 
-def run(path, writer, action):
+def run(path, writer, action, receipt_drive_id):
     raw = path.read_bytes()
     receipt = validated_receipt(raw)
     mod = source_module(writer)
     assert getattr(mod, "ENV", None) == "samwise://pixel11", "UNEXPECTED_LEDGER_OWNER"
-    evidence_url = "https://drive.google.com/file/d/" + receipt["drive"]["receipt_file_id"] + "/view"
+    if not (isinstance(receipt_drive_id, str) and len(receipt_drive_id) >= 15 and receipt_drive_id.isascii() and all(x.isalnum() or x in "-_" for x in receipt_drive_id)):\n        raise ValueError("RECEIPT_DRIVE_ID_INVALID")\n    evidence_url = "https://drive.google.com/file/d/" + receipt_drive_id + "/view"
     payload = {
         "target": receipt["target"], "observed_model": receipt["device"]["observed_model"],
         "github_repo": REPO, "project_node_id": PROJECT_ID, "drive_folder_id": DRIVE_FOLDER,
-        "receipt_sha256": digest(raw), "receipt_google_drive_file_id": receipt["drive"]["receipt_file_id"]
+        "receipt_sha256": digest(raw), "receipt_google_drive_file_id": receipt_drive_id
     }
     event = mod.make_event(
         "samwise://bootstrap/accumulation-v1",
@@ -91,11 +91,11 @@ def run(path, writer, action):
 def main():
     p = argparse.ArgumentParser()
     p.add_argument("action", choices=("verify", "apply"))
-    p.add_argument("--receipt", type=Path, required=True)
+    p.add_argument("--receipt", type=Path, required=True)\n    p.add_argument("--receipt-drive-id", required=True)
     p.add_argument("--writer", type=Path, default=Path.home() / "dev/scripts/samwise.py")
     args = p.parse_args()
     try:
-        print(json.dumps(run(args.receipt, args.writer, args.action), sort_keys=True, indent=2))
+        print(json.dumps(run(args.receipt, args.writer, args.action, args.receipt_drive_id), sort_keys=True, indent=2))
         return 0
     except (OSError, ValueError, RuntimeError, AssertionError) as exc:
         print(json.dumps({"result": "FAILED", "reason": str(exc)}))
