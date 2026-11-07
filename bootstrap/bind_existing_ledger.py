@@ -60,7 +60,9 @@ def run(path, writer, action, receipt_drive_id):
     receipt = validated_receipt(raw)
     mod = source_module(writer)
     assert getattr(mod, "ENV", None) == "samwise://pixel11", "UNEXPECTED_LEDGER_OWNER"
-    if not (isinstance(receipt_drive_id, str) and len(receipt_drive_id) >= 15 and receipt_drive_id.isascii() and all(x.isalnum() or x in "-_" for x in receipt_drive_id)):\n        raise ValueError("RECEIPT_DRIVE_ID_INVALID")\n    evidence_url = "https://drive.google.com/file/d/" + receipt_drive_id + "/view"
+    if not (isinstance(receipt_drive_id, str) and len(receipt_drive_id) >= 15 and receipt_drive_id.isascii() and all(x.isalnum() or x in "-_" for x in receipt_drive_id)):
+        raise ValueError("RECEIPT_DRIVE_ID_INVALID")
+    evidence_url = "https://drive.google.com/file/d/" + receipt_drive_id + "/view"
     payload = {
         "target": receipt["target"], "observed_model": receipt["device"]["observed_model"],
         "github_repo": REPO, "project_node_id": PROJECT_ID, "drive_folder_id": DRIVE_FOLDER,
