@@ -23,6 +23,11 @@ def canonical(value):
 def digest(data):
     return hashlib.sha256(data).hexdigest()
 
+def receipt_digest(data):
+    # Drive and terminal text tools differ in preservation of a terminal LF.
+    # One and only one terminal LF is ignored; all other receipt bytes remain binding.
+    return digest(data[:-1] if data.endswith(bytes([10])) else data)
+
 def source_module(path):
     spec = importlib.util.spec_from_file_location("samwise_existing_ledger", path)
     if spec is None or spec.loader is None:
@@ -66,7 +71,7 @@ def run(path, writer, action, receipt_drive_id):
     payload = {
         "target": receipt["target"], "observed_model": receipt["device"]["observed_model"],
         "github_repo": REPO, "project_node_id": PROJECT_ID, "drive_folder_id": DRIVE_FOLDER,
-        "receipt_sha256": digest(raw), "receipt_google_drive_file_id": receipt_drive_id
+        "receipt_sha256": receipt_digest(raw), "receipt_google_drive_file_id": receipt_drive_id
     }
     event = mod.make_event(
         "samwise://bootstrap/accumulation-v1",
@@ -88,7 +93,7 @@ def run(path, writer, action, receipt_drive_id):
         raise RuntimeError("LEDGER_EVENT_CARDINALITY_FAILURE")
     return {"result": "UNCHANGED" if existed else "VERIFIED", "event_id": event["event_id"],
             "existing_event": existed, "ledger_cursor": cursor,
-            "ledger_sha256": digest(ledger_path.read_bytes()), "receipt_sha256": digest(raw)}
+            "ledger_sha256": digest(ledger_path.read_bytes()), "receipt_sha256": receipt_digest(raw)}
 
 def main():
     p = argparse.ArgumentParser()
